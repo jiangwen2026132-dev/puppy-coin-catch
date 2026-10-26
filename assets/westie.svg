@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160">
+  <title>西高地白梗</title>
+  <g stroke="#8c8375" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M33 64 23 20q-1-10 8-4l31 25m65 23 10-44q1-10-8-4L98 41" fill="#fffdf5"/>
+    <path d="m34 45-4-21 21 19m75 2 4-21-21 19" fill="#ecc8bf" stroke="none"/>
+    <path d="m42 40 6-9 10 5 10-9 10 7 11-6 10 9 11-3 8 10 10 6-2 11 10 13-7 9 8 13-11 7 2 12-13 3-5 12-15-2-12 7-13-5-14 3-9-10-13-2-3-12-11-6 5-13-7-10 8-11-1-12 10-9Z" fill="#fffdf5"/>
+    <path d="m45 89 8 2-6 7 13-1-7 8m62-16-8 2 6 7-13-1 7 8" fill="none" stroke="#e0d8c8" stroke-width="2"/>
+    <path d="M51 74q6-6 12 0m34 0q6-6 12 0" fill="none" stroke="#665d52" stroke-width="4"/>
+    <path d="M56 92q4-17 24-17t24 17c0 21-14 32-24 32S56 113 56 92Z" fill="#f5f0e4" stroke="none"/>
+    <ellipse cx="47" cy="89" rx="8" ry="4" fill="#eab7ad" stroke="none"/><ellipse cx="113" cy="89" rx="8" ry="4" fill="#eab7ad" stroke="none"/>
+    <path d="M69 89q11-7 22 0c0 8-7 12-11 12s-11-4-11-12Z" fill="#5c554b" stroke="none"/>
+    <path d="M80 101v9m-13-2q6 7 13 1 7 6 13-1" fill="none" stroke="#7b6e60" stroke-width="2.5"/>
+    <path d="M73 112v8c0 12 14 12 14 0v-8" fill="#ebaaa2" stroke="#8b776d" stroke-width="2.3"/><path d="M80 115v7" stroke="#cc8d88" stroke-width="1.8"/>
+    <path d="M54 136q26 13 52 0" fill="none" stroke="#92a18b" stroke-width="9"/>
+    <circle cx="80" cy="145" r="7" fill="#edca76" stroke="#b99a55" stroke-width="2"/>
+    <path d="m78 143 4 4m0-4-4 4" stroke="#b99a55" stroke-width="1.5"/>
+  </g>
+</svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160">
+  <title>棕色卷毛泰迪</title>
+  <g stroke="#79573e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M39 44c-13-8-27 1-27 14-12 8-9 23-2 29-4 16 8 26 20 22l14-15m77-50c13-8 27 1 27 14 12 8 9 23 2 29 4 16-8 26-20 22l-14-15" fill="#a7754d"/>
+    <path d="M39 39c-1-13 12-22 23-17C70 9 88 10 95 22c14-5 29 3 28 17 14 3 21 18 13 30 9 12 5 28-7 33 2 15-11 26-25 22-8 13-28 15-39 7-14 7-31-2-31-16-14-3-21-19-14-32-10-11-6-28 8-33-2-6 3-11 11-11Z" fill="#c9925f"/>
+    <path d="M41 43q9-9 17-1m5-17q-5 7 2 12m22-16q-6 6 0 12m16 6q8-6 13 0M29 61q6 7-1 12m108-12q-7 7 0 13m-102 30q10-2 11 7m71-4q0-8 9-10" fill="none" stroke="#ae774d" stroke-width="2.3"/>
+    <path d="M48 76q7-7 14 0m36 0q7-7 14 0" fill="none" stroke="#62462f" stroke-width="4"/>
+    <path d="M53 96c-5-16 11-24 27-19 16-5 32 3 27 19 5 17-12 29-27 25-15 4-32-8-27-25Z" fill="#e5ba86" stroke="none"/>
+    <ellipse cx="44" cy="91" rx="8" ry="4" fill="#d79b7e" stroke="none"/><ellipse cx="116" cy="91" rx="8" ry="4" fill="#d79b7e" stroke="none"/>
+    <path d="M69 89q11-7 22 0c0 8-7 12-11 12s-11-4-11-12Z" fill="#62462f" stroke="none"/>
+    <path d="M80 101v9m-13-2q6 7 13 1 7 6 13-1" fill="none" stroke-width="2.5"/>
+    <path d="M73 112v8c0 12 14 12 14 0v-8" fill="#e5a098" stroke-width="2.3"/><path d="M80 115v7" stroke="#c77c76" stroke-width="1.8"/>
+    <path d="M55 136q25 12 50 0" fill="none" stroke="#bc8c80" stroke-width="9"/>
+    <circle cx="80" cy="145" r="7" fill="#edca76" stroke="#b99a55" stroke-width="2"/>
+    <path d="m78 143 4 4m0-4-4 4" stroke="#b99a55" stroke-width="1.5"/>
+  </g>
+</svg>

@@ -2,10 +2,13 @@
 
 一只小狗的小小发财计划。用 60 秒接住金币、躲开炸弹，装满快乐的小口袋。
 
+[🎮 在线玩](https://jiangwen2026132-dev.github.io/puppy-coin-catch/)
+
 使用原生 HTML、CSS、JavaScript 和 Canvas，无需安装依赖、无需后端或 API Key。小狗与场景是项目自带的 SVG / Canvas 绘图，音效由浏览器合成，没有第三方素材或外部网络请求。
 
 ## 怎么玩
 
+- 在页面上方选择 **西高地、泰迪、边牧**：欢迎头像、游戏里的小狗与尾巴都会一起变化；游戏中也可随时切换。浏览器会记住上次的选择，切换不会重置本局得分、时间或最高纪录。
 - 电脑：方向键 `←` `→` 或 `A` `D` 移动，也可在游戏区内移动鼠标。
 - 手机：在游戏区拖动手指，或按住下方的左右按钮。
 - 暂停：点击右上角暂停按钮，或按空格 / `P` / `Esc`。切换窗口或标签页会自动暂停。
@@ -45,7 +48,10 @@ index.html          页面结构
 styles.css          配色、布局、手机适配
 engine.js           得分、碰撞、计时和状态
 game.js             场景绘制、输入、音效、本地纪录
-assets/puppy.svg    小狗插画及网站图标
+assets/westie.svg   西高地插画
+assets/teddy.svg    泰迪插画
+assets/collie.svg   边牧插画
+assets/puppy.svg    首版小狗插画（保留素材）
 tests/engine.test.cjs  游戏规则验证
 ```
 
@@ -63,7 +69,7 @@ node --test tests/engine.test.cjs
 
 - 每局时长：`engine.js` 中的 `DURATION`。
 - 金币 / 骨头分值和连击倍率：`engine.js` 的奖励碰撞分支。
-- 小狗模样：`assets/puppy.svg`。
+- 小狗模样：`assets/westie.svg`、`assets/teddy.svg`、`assets/collie.svg`；对应的身体和尾巴样式在 `game.js` 的 `companions` 设置中。
 - 页面主色：`styles.css` 开头的颜色变量。
 
 MIT License，可自由修改和分享。

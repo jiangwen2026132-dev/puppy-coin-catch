@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160">
+  <title>黑白边境牧羊犬</title>
+  <g stroke="#55534f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m32 65-8-45q-1-9 7-4l33 28m64 21 8-45q1-9-7-4L96 44" fill="#484a49"/>
+    <path d="m34 45-4-21 22 21m74 0 4-21-22 21" fill="#b29a94" stroke="none"/>
+    <path d="M31 67c0-28 19-40 49-40s49 12 49 40l1 17 8 10-9 6 3 12-13 3-5 13-17-2-17 10-17-10-17 2-5-13-13-3 3-12-9-6 8-10Z" fill="#484a49"/>
+    <path d="M80 29c-12 9-9 26-17 41-6 11-21 15-20 31 1 21 18 31 37 31s36-10 37-31c1-16-14-20-20-31-8-15-5-32-17-41Z" fill="#fff9eb" stroke="none"/>
+    <path d="M46 74q7-7 14 0m40 0q7-7 14 0" fill="none" stroke="#f4e9d4" stroke-width="3.5"/>
+    <path d="m42 91 10 2m66-2-10 2" stroke="#cc9f91" stroke-width="5"/>
+    <path d="M69 90q11-7 22 0c0 8-7 12-11 12s-11-4-11-12Z" fill="#454744" stroke="none"/>
+    <path d="M80 102v8m-13-2q6 7 13 1 7 6 13-1" fill="none" stroke="#777064" stroke-width="2.5"/>
+    <path d="M73 112v8c0 12 14 12 14 0v-8" fill="#e5a098" stroke="#8b776d" stroke-width="2.3"/><path d="M80 115v7" stroke="#c77c76" stroke-width="1.8"/>
+    <path d="M54 136q26 13 52 0" fill="none" stroke="#8c9ba4" stroke-width="9"/>
+    <circle cx="80" cy="145" r="7" fill="#edca76" stroke="#b99a55" stroke-width="2"/>
+    <path d="m78 143 4 4m0-4-4 4" stroke="#b99a55" stroke-width="1.5"/>
+  </g>
+</svg>

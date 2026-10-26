@@ -9,8 +9,20 @@
   const startButton = byId('start-button');
   const pauseButton = byId('pause-button');
   const soundButton = byId('sound-button');
-  const puppy = new Image();
-  puppy.src = './assets/puppy.svg';
+  const companions = {
+    westie: { name: '西高地', image: './assets/westie.svg', alt: '白白软软、尖耳朵的西高地小狗', coat: '#fffaf0', chest: '#f0eadb', paws: '#fffaf0', outline: '#b9b09c', tail: 'upright' },
+    teddy: { name: '泰迪', image: './assets/teddy.svg', alt: '棕色卷毛、圆耳朵的泰迪小狗', coat: '#c9925f', chest: '#e0b37d', paws: '#d9a36e', outline: '#a8794f', tail: 'curly' },
+    collie: { name: '边牧', image: './assets/collie.svg', alt: '黑白毛色、竖耳朵的边牧小狗', coat: '#484a49', chest: '#fff8e8', paws: '#fff8e8', outline: '#55534f', tail: 'bushy' },
+  };
+  const companionImages = new Map(Object.entries(companions).map(([id, settings]) => {
+    const image = new Image();
+    image.src = settings.image;
+    return [id, image];
+  }));
+  const companionStorageKey = 'puppy-coin-catch.companion.v1';
+  let companion = companions.westie;
+  let puppy = companionImages.get('westie');
+  let companionStorageAvailable = true;
   const keys = new Set();
   const touchHolds = new Map();
   const leftButton = byId('left-button');
@@ -42,6 +54,40 @@
   if (!storageAvailable) byId('saved-note').textContent = '当前浏览器未允许保存，纪录仅本次有效';
 
   function announce(message) { byId('announcement').textContent = message; }
+
+  function selectCompanion(id, persist = true) {
+    if (!Object.prototype.hasOwnProperty.call(companions, id)) id = 'westie';
+    companion = companions[id];
+    puppy = companionImages.get(id);
+    clearInput();
+    document.querySelectorAll('[data-companion]').forEach((button) => {
+      button.setAttribute('aria-pressed', String(button.dataset.companion === id));
+    });
+    document.querySelectorAll('[data-companion-portrait]').forEach((image) => {
+      image.src = companion.image;
+      // Keep the wordmark image decorative, but describe the welcome portrait.
+      if (image.alt) image.alt = companion.alt;
+    });
+    document.querySelector('link[rel="icon"]').href = companion.image;
+    byId('companion-park').textContent = `${companion.name}的好运公园`;
+    canvas.setAttribute('aria-label', `${companion.name}游戏画面。按左右方向键或 A、D 移动小狗，空格键暂停。手机可拖动小狗或使用下方按钮。`);
+    if (game.status === 'ready') byId('card-kicker').textContent = `${companion.name}准备好啦，汪！`;
+    if (game.status === 'paused') byId('card-kicker').textContent = `${companion.name}在等你回来`;
+    if (persist) {
+      try { localStorage.setItem(companionStorageKey, id); }
+      catch (_) { companionStorageAvailable = false; }
+      byId('companion-status').textContent = `已选择${companion.name}，一起接住好运气！`;
+    }
+    if (!companionStorageAvailable) byId('companion-note').textContent = '本次可以切换，浏览器暂不支持保存。';
+  }
+
+  let savedCompanion = 'westie';
+  try { savedCompanion = localStorage.getItem(companionStorageKey) || 'westie'; }
+  catch (_) { companionStorageAvailable = false; }
+  selectCompanion(savedCompanion, false);
+  document.querySelectorAll('[data-companion]').forEach((button) => {
+    button.addEventListener('click', () => selectCompanion(button.dataset.companion));
+  });
 
   function ensureAudio() {
     try {
@@ -81,7 +127,7 @@
     screen.className = `screen is-${kind}`;
     byId('result-stats').hidden = kind !== 'result';
     const paused = kind === 'paused';
-    byId('card-kicker').textContent = paused ? '小狗在等你回来' : '汪！这一局也很棒！';
+    byId('card-kicker').textContent = paused ? `${companion.name}在等你回来` : '汪！这一局也很棒！';
     byId('card-title').textContent = paused ? '歇一下，再出发' : game.reason === 'time' ? '今天的好运已收好' : '抱抱小狗，再来一次';
     byId('card-description').innerHTML = paused ? '深呼吸，摇摇尾巴。<br>准备好了，就继续这场小冒险。' : game.reason === 'time' ? '快乐的 60 秒结束啦，下次也要一起玩！' : '炸弹有点调皮，下次一定躲得更漂亮。';
     byId('start-label').textContent = paused ? '继续冒险' : '再玩一局';
@@ -259,14 +305,31 @@
     ctx.save(); ctx.translate(x, PLAYER_Y + bob);
     ctx.scale(1, spriteYScale);
     if (game.invincible > 0 && Math.floor(game.invincible * 10) % 2 === 0) ctx.globalAlpha = 0.4;
-    ctx.strokeStyle = '#aa774b'; ctx.lineWidth = 9; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(26,6); ctx.quadraticCurveTo(55, -3 + Math.sin(sceneryTime * 10) * 7,43,-15); ctx.stroke();
-    ellipse(0,12,29,25,'#cf965e'); ellipse(0,12,17,22,'#fff0d3');
-    ellipse(-19,30,11,7,'#e4ae77'); ellipse(19,30,11,7,'#e4ae77');
+    const wag = motionReduced ? 0 : Math.sin(sceneryTime * 10) * 5;
+    ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(26,6);
+    if (companion.tail === 'upright') ctx.quadraticCurveTo(39 + wag, -1, 37 + wag, -22);
+    else ctx.quadraticCurveTo(55, -3 + wag, 43, -15);
+    ctx.strokeStyle = companion.outline; ctx.lineWidth = companion.tail === 'bushy' ? 14 : 11; ctx.stroke();
+    ctx.strokeStyle = companion.coat; ctx.lineWidth -= 3; ctx.stroke();
+    if (companion.tail === 'curly') {
+      ellipse(43,-15,8,8,companion.outline); ellipse(43,-16,6,6,companion.coat);
+    } else if (companion.tail === 'bushy') {
+      ctx.strokeStyle = '#fff8e8'; ctx.lineWidth = 10; ctx.beginPath(); ctx.moveTo(46,-9); ctx.quadraticCurveTo(48,-12,43,-15); ctx.stroke();
+    }
+    ellipse(0,12,29,25,companion.coat);
+    ctx.strokeStyle = companion.outline; ctx.lineWidth = 1.3; ctx.stroke();
+    ellipse(0,12,17,22,companion.chest);
+    if (companion.tail === 'curly') {
+      ctx.strokeStyle = '#ae774d'; ctx.lineWidth = 1.6;
+      for (const [x,y] of [[-22,6],[22,6],[-24,19],[24,19]]) { ctx.beginPath(); ctx.arc(x,y,4,0.3,Math.PI * 1.6); ctx.stroke(); }
+    }
+    ellipse(-19,30,11,7,companion.paws); ellipse(19,30,11,7,companion.paws);
     ctx.fillStyle = '#7f6b4c'; ctx.strokeStyle = '#756044'; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.roundRect(-30,17,60,21,5); ctx.fillStyle = '#caa77a'; ctx.fill(); ctx.stroke();
     ctx.strokeStyle = '#b18d61'; ctx.beginPath(); ctx.moveTo(-27,24); ctx.lineTo(27,24); ctx.moveTo(-26,31); ctx.lineTo(26,31); ctx.moveTo(-16,18); ctx.lineTo(-16,37); ctx.moveTo(0,18); ctx.lineTo(0,37); ctx.moveTo(16,18); ctx.lineTo(16,37); ctx.stroke();
     if (puppy.complete && puppy.naturalWidth) ctx.drawImage(puppy, -45, -66, 90, 90);
-    else { ellipse(0,-26,33,32,'#e4ae77'); ellipse(-12,-28,3,4,'#654c35'); ellipse(12,-28,3,4,'#654c35'); ellipse(0,-14,5,4,'#654c35'); }
+    else { ellipse(0,-26,33,32,companion.coat); ellipse(-12,-28,3,4,'#94806a'); ellipse(12,-28,3,4,'#94806a'); ellipse(0,-14,5,4,'#94806a'); }
     ctx.restore();
   }
 
