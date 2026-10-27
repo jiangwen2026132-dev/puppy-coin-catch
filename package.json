@@ -1,8 +1,8 @@
 {
   "name": "puppy-coin-catch",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
-  "description": "A cozy little browser game: help a puppy catch coins and dodge bombs.",
+  "description": "A cozy browser game with six switchable cat and dog companions: catch coins and dodge bombs.",
   "scripts": { "test": "node --test tests/*.test.cjs" },
   "license": "MIT"
 }

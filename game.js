@@ -10,9 +10,12 @@
   const pauseButton = byId('pause-button');
   const soundButton = byId('sound-button');
   const companions = {
-    westie: { name: '西高地', image: './assets/westie.svg', alt: '白白软软、尖耳朵的西高地小狗', coat: '#fffaf0', chest: '#f0eadb', paws: '#fffaf0', outline: '#b9b09c', tail: 'upright' },
-    teddy: { name: '泰迪', image: './assets/teddy.svg', alt: '棕色卷毛、圆耳朵的泰迪小狗', coat: '#c9925f', chest: '#e0b37d', paws: '#d9a36e', outline: '#a8794f', tail: 'curly' },
-    collie: { name: '边牧', image: './assets/collie.svg', alt: '黑白毛色、竖耳朵的边牧小狗', coat: '#484a49', chest: '#fff8e8', paws: '#fff8e8', outline: '#55534f', tail: 'bushy' },
+    westie: { species: 'dog', name: '西高地', image: './assets/westie.svg', alt: '白白软软、尖耳朵的西高地小狗', coat: '#fffaf0', chest: '#f0eadb', paws: '#fffaf0', outline: '#b9b09c', tail: 'upright' },
+    teddy: { species: 'dog', name: '泰迪', image: './assets/teddy.svg', alt: '棕色卷毛、圆耳朵的泰迪小狗', coat: '#c9925f', chest: '#e0b37d', paws: '#d9a36e', outline: '#a8794f', tail: 'curly' },
+    collie: { species: 'dog', name: '边牧', image: './assets/collie.svg', alt: '黑白毛色、竖耳朵的边牧小狗', coat: '#484a49', chest: '#fff8e8', paws: '#fff8e8', outline: '#55534f', tail: 'bushy' },
+    ginger: { species: 'cat', name: '橘猫', image: './assets/ginger.svg', alt: '橘色虎斑毛、绿色眼睛的小猫', coat: '#e8b472', chest: '#fff0d4', paws: '#f2d4a5', outline: '#b58b5e', tail: 'cat', markings: 'tabby' },
+    ragdoll: { species: 'cat', name: '布偶', image: './assets/ragdoll.svg', alt: '浅色长毛、蓝眼睛的布偶猫', coat: '#fff9ef', chest: '#f1ebe0', paws: '#fffaf1', outline: '#b7aa9d', tail: 'cat', tailColor: '#b7aa9d' },
+    cowcat: { species: 'cat', name: '奶牛猫', image: './assets/cow-cat.svg', alt: '黑白斑点、小花脸的奶牛猫', coat: '#fffaf0', chest: '#f6f0e3', paws: '#fffaf0', outline: '#a7a396', tail: 'cat', tailColor: '#505351', markings: 'cow' },
   };
   const companionImages = new Map(Object.entries(companions).map(([id, settings]) => {
     const image = new Image();
@@ -20,6 +23,8 @@
     return [id, image];
   }));
   const companionStorageKey = 'puppy-coin-catch.companion.v1';
+  const speciesChoicesKey = 'puppy-coin-catch.species-choices.v1';
+  const lastCompanionBySpecies = { dog: 'westie', cat: 'ginger' };
   let companion = companions.westie;
   let puppy = companionImages.get('westie');
   let companionStorageAvailable = true;
@@ -54,12 +59,21 @@
   if (!storageAvailable) byId('saved-note').textContent = '当前浏览器未允许保存，纪录仅本次有效';
 
   function announce(message) { byId('announcement').textContent = message; }
+  function petLabel() { return companion.species === 'cat' ? '猫咪' : '小狗'; }
+  function petVoice() { return companion.species === 'cat' ? '喵' : '汪'; }
 
   function selectCompanion(id, persist = true) {
     if (!Object.prototype.hasOwnProperty.call(companions, id)) id = 'westie';
     companion = companions[id];
     puppy = companionImages.get(id);
+    lastCompanionBySpecies[companion.species] = id;
     clearInput();
+    document.querySelectorAll('[data-species]').forEach((button) => {
+      button.setAttribute('aria-pressed', String(button.dataset.species === companion.species));
+    });
+    document.querySelectorAll('[data-companion-group]').forEach((group) => {
+      group.hidden = group.dataset.companionGroup !== companion.species;
+    });
     document.querySelectorAll('[data-companion]').forEach((button) => {
       button.setAttribute('aria-pressed', String(button.dataset.companion === id));
     });
@@ -69,12 +83,23 @@
       if (image.alt) image.alt = companion.alt;
     });
     document.querySelector('link[rel="icon"]').href = companion.image;
+    document.title = `${petLabel()}接金币 · Paws & Coins`;
+    byId('brand-name').textContent = `${petLabel()}接金币`;
+    byId('hero-pet').textContent = `${petLabel()}的`;
+    byId('rules-title').textContent = `${petLabel()}的冒险指南`;
     byId('companion-park').textContent = `${companion.name}的好运公园`;
-    canvas.setAttribute('aria-label', `${companion.name}游戏画面。按左右方向键或 A、D 移动小狗，空格键暂停。手机可拖动小狗或使用下方按钮。`);
-    if (game.status === 'ready') byId('card-kicker').textContent = `${companion.name}准备好啦，汪！`;
+    canvas.setAttribute('aria-label', `${companion.name}游戏画面。按左右方向键或 A、D 移动${petLabel()}，空格键暂停。手机可拖动角色或使用下方按钮。`);
+    if (game.status === 'ready') byId('card-kicker').textContent = `${companion.name}准备好啦，${petVoice()}！`;
     if (game.status === 'paused') byId('card-kicker').textContent = `${companion.name}在等你回来`;
+    if (game.status === 'over') {
+      if (game.score <= bestAtStart) byId('card-kicker').textContent = `${petVoice()}！这一局也很棒！`;
+      if (game.reason === 'lives') byId('card-title').textContent = `抱抱${petLabel()}，再来一次`;
+    }
     if (persist) {
-      try { localStorage.setItem(companionStorageKey, id); }
+      try {
+        localStorage.setItem(companionStorageKey, id);
+        localStorage.setItem(speciesChoicesKey, JSON.stringify(lastCompanionBySpecies));
+      }
       catch (_) { companionStorageAvailable = false; }
       byId('companion-status').textContent = `已选择${companion.name}，一起接住好运气！`;
     }
@@ -82,11 +107,23 @@
   }
 
   let savedCompanion = 'westie';
-  try { savedCompanion = localStorage.getItem(companionStorageKey) || 'westie'; }
+  try {
+    savedCompanion = localStorage.getItem(companionStorageKey) || 'westie';
+    try {
+      const choices = JSON.parse(localStorage.getItem(speciesChoicesKey) || '{}');
+      for (const species of ['dog', 'cat']) {
+        const id = choices?.[species];
+        if (Object.prototype.hasOwnProperty.call(companions, id) && companions[id].species === species) lastCompanionBySpecies[species] = id;
+      }
+    } catch (_) { /* Ignore an outdated or malformed preference; play normally. */ }
+  }
   catch (_) { companionStorageAvailable = false; }
   selectCompanion(savedCompanion, false);
   document.querySelectorAll('[data-companion]').forEach((button) => {
     button.addEventListener('click', () => selectCompanion(button.dataset.companion));
+  });
+  document.querySelectorAll('[data-species]').forEach((button) => {
+    button.addEventListener('click', () => selectCompanion(lastCompanionBySpecies[button.dataset.species]));
   });
 
   function ensureAudio() {
@@ -127,8 +164,8 @@
     screen.className = `screen is-${kind}`;
     byId('result-stats').hidden = kind !== 'result';
     const paused = kind === 'paused';
-    byId('card-kicker').textContent = paused ? `${companion.name}在等你回来` : '汪！这一局也很棒！';
-    byId('card-title').textContent = paused ? '歇一下，再出发' : game.reason === 'time' ? '今天的好运已收好' : '抱抱小狗，再来一次';
+    byId('card-kicker').textContent = paused ? `${companion.name}在等你回来` : `${petVoice()}！这一局也很棒！`;
+    byId('card-title').textContent = paused ? '歇一下，再出发' : game.reason === 'time' ? '今天的好运已收好' : `抱抱${petLabel()}，再来一次`;
     byId('card-description').innerHTML = paused ? '深呼吸，摇摇尾巴。<br>准备好了，就继续这场小冒险。' : game.reason === 'time' ? '快乐的 60 秒结束啦，下次也要一起玩！' : '炸弹有点调皮，下次一定躲得更漂亮。';
     byId('start-label').textContent = paused ? '继续冒险' : '再玩一局';
     byId('card-hint').textContent = paused ? '按空格键 / P，也可以继续游戏' : '每一局都是一次新的小冒险 ♡';
@@ -156,7 +193,7 @@
       shake = 0;
       bestAtStart = best;
       byId('card-kicker').classList.remove('new-record');
-      announce('开始游戏，60 秒挑战。左右移动小狗，接金币，躲炸弹。');
+      announce(`开始游戏，60 秒挑战。左右移动${petLabel()}，接金币，躲炸弹。`);
       tone(523, 0.1); tone(659, 0.1, 0.09); tone(784, 0.14, 0.18);
     }
     previousTime = performance.now();
@@ -183,7 +220,7 @@
     if (game.score <= best) return;
     best = game.score;
     byId('best-score').textContent = best;
-    byId('record-note').textContent = '又进步了一点点，汪！';
+    byId('record-note').textContent = '又进步了一点点，好棒！';
     if (storageAvailable) {
       try { localStorage.setItem(storageKey, String(best)); }
       catch (_) {
@@ -297,7 +334,7 @@
     ctx.strokeStyle = '#dbb762'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(15,-34); ctx.lineTo(15,-29); ctx.moveTo(21,-29); ctx.lineTo(18,-26); ctx.moveTo(23,-22); ctx.lineTo(18,-23); ctx.stroke(); ctx.restore();
   }
 
-  function drawDog() {
+  function drawCompanion() {
     const x = game.playerX;
     const moving = keys.size > 0 || touchHolds.size > 0;
     const bob = motionReduced ? 0 : Math.sin(sceneryTime * (moving ? 14 : 3)) * (moving ? 2 : 0.7);
@@ -308,18 +345,28 @@
     const wag = motionReduced ? 0 : Math.sin(sceneryTime * 10) * 5;
     ctx.lineCap = 'round';
     ctx.beginPath(); ctx.moveTo(26,6);
-    if (companion.tail === 'upright') ctx.quadraticCurveTo(39 + wag, -1, 37 + wag, -22);
+    if (companion.tail === 'cat') {
+      ctx.bezierCurveTo(51,16,65 + wag,-8,53 + wag,-26);
+      ctx.bezierCurveTo(47 + wag,-35,35 + wag,-28,40 + wag,-20);
+    } else if (companion.tail === 'upright') ctx.quadraticCurveTo(39 + wag, -1, 37 + wag, -22);
     else ctx.quadraticCurveTo(55, -3 + wag, 43, -15);
-    ctx.strokeStyle = companion.outline; ctx.lineWidth = companion.tail === 'bushy' ? 14 : 11; ctx.stroke();
-    ctx.strokeStyle = companion.coat; ctx.lineWidth -= 3; ctx.stroke();
+    ctx.strokeStyle = companion.outline; ctx.lineWidth = companion.tail === 'cat' ? 9 : companion.tail === 'bushy' ? 14 : 11; ctx.stroke();
+    ctx.strokeStyle = companion.tailColor || companion.coat; ctx.lineWidth -= 3; ctx.stroke();
     if (companion.tail === 'curly') {
       ellipse(43,-15,8,8,companion.outline); ellipse(43,-16,6,6,companion.coat);
     } else if (companion.tail === 'bushy') {
       ctx.strokeStyle = '#fff8e8'; ctx.lineWidth = 10; ctx.beginPath(); ctx.moveTo(46,-9); ctx.quadraticCurveTo(48,-12,43,-15); ctx.stroke();
     }
-    ellipse(0,12,29,25,companion.coat);
+    ellipse(0,12,companion.species === 'cat' ? 25 : 29,25,companion.coat);
     ctx.strokeStyle = companion.outline; ctx.lineWidth = 1.3; ctx.stroke();
     ellipse(0,12,17,22,companion.chest);
+    if (companion.markings === 'tabby') {
+      ctx.strokeStyle = '#c48a4f'; ctx.lineWidth = 3; ctx.beginPath();
+      ctx.moveTo(-23,2); ctx.lineTo(-16,5); ctx.moveTo(-25,13); ctx.lineTo(-17,14);
+      ctx.moveTo(23,2); ctx.lineTo(16,5); ctx.moveTo(25,13); ctx.lineTo(17,14); ctx.stroke();
+    } else if (companion.markings === 'cow') {
+      ellipse(-19,5,6,8,'#505351'); ellipse(19,17,6,8,'#505351');
+    }
     if (companion.tail === 'curly') {
       ctx.strokeStyle = '#ae774d'; ctx.lineWidth = 1.6;
       for (const [x,y] of [[-22,6],[22,6],[-24,19],[24,19]]) { ctx.beginPath(); ctx.arc(x,y,4,0.3,Math.PI * 1.6); ctx.stroke(); }
@@ -352,7 +399,7 @@
       else if (item.type === 'bone') drawBone(item.x,item.y,Math.sin(sceneryTime * 2 + item.phase) * 0.4);
       else drawBomb(item.x,item.y,item.phase);
     }
-    drawDog();
+    drawCompanion();
     for (const effect of effects) {
       if (game.status === 'playing') {
         effect.age += dt;

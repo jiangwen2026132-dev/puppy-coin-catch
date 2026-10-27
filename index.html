@@ -4,19 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#fcf8f0">
-  <meta name="description" content="一只小狗的小小发财计划。移动小狗接住金币、躲开炸弹，来一场 60 秒的快乐挑战！">
+  <meta name="description" content="小猫小狗的小小发财计划。六种萌宠外观自由切换，接金币、躲炸弹，来一场 60 秒的快乐挑战！">
   <title>小狗接金币 · A little happy arcade</title>
   <link rel="icon" href="./assets/westie.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./styles.css?v=1.1.0">
+  <link rel="stylesheet" href="./styles.css?v=1.2.0">
   <script src="./engine.js" defer></script>
-  <script src="./game.js?v=1.1.0" defer></script>
+  <script src="./game.js?v=1.2.0" defer></script>
 </head>
 <body>
   <div class="site-shell">
     <header class="site-header">
-      <a class="brand" href="./" aria-label="小狗接金币首页">
+      <a class="brand" href="./" aria-label="萌宠接金币首页">
         <span class="brand-mark"><img data-companion-portrait src="./assets/westie.svg" alt="" width="37" height="37"></span>
-        <span>小狗接金币<small>PAWS & COINS</small></span>
+        <span><span id="brand-name">小狗接金币</span><small>PAWS & COINS</small></span>
       </a>
       <div class="header-actions">
         <span class="little-note">把快乐，接住一点点 <span aria-hidden="true">✦</span></span>
@@ -28,16 +28,21 @@
 
     <main>
       <section class="intro" aria-labelledby="page-title">
-        <div><p class="eyebrow"><span></span> A LITTLE HAPPY ARCADE</p><h1 id="page-title">小狗的<span>金币奇遇</span><i aria-hidden="true">✧</i></h1><p class="intro-copy">甩甩尾巴，接住今天的好运气。</p></div>
+        <div><p class="eyebrow"><span></span> A LITTLE HAPPY ARCADE</p><h1 id="page-title"><span id="hero-pet" class="hero-pet">小狗的</span><span>金币奇遇</span><i aria-hidden="true">✧</i></h1><p class="intro-copy">甩甩尾巴，接住今天的好运气。</p></div>
         <div class="intro-sticker" aria-hidden="true"><span>JUST ONE<br>MORE ROUND!</span><svg viewBox="0 0 45 45"><ellipse cx="23" cy="29" rx="10" ry="8"/><ellipse cx="10" cy="18" rx="4" ry="6" transform="rotate(-25 10 18)"/><ellipse cx="21" cy="11" rx="4" ry="6"/><ellipse cx="32" cy="14" rx="4" ry="6" transform="rotate(20 32 14)"/><ellipse cx="38" cy="24" rx="4" ry="5" transform="rotate(35 38 24)"/></svg></div>
       </section>
 
       <section class="companion-picker" aria-labelledby="companion-title">
-        <div class="companion-heading"><h2 id="companion-title">选一位小伙伴 <span aria-hidden="true">♡</span></h2><p id="companion-note">随时换一只，记住你的选择。</p></div>
-        <div class="companion-options" role="group" aria-label="小狗品种">
+        <div class="companion-heading"><h2 id="companion-title">选一位小伙伴 <span aria-hidden="true">♡</span></h2><p id="companion-note">随时切换，记住你的选择。</p><div class="species-switch" role="group" aria-label="宠物类型"><button type="button" data-species="dog" aria-pressed="true">小狗</button><button type="button" data-species="cat" aria-pressed="false">猫咪</button></div></div>
+        <div class="companion-options" data-companion-group="dog" role="group" aria-label="小狗外观">
           <button class="companion-option" type="button" data-companion="westie" aria-label="选择西高地" aria-pressed="true"><img src="./assets/westie.svg" alt="" width="56" height="56"><span class="companion-caption"><strong>西高地</strong><small>白白软软 · 小尖耳</small></span><span class="companion-check" aria-hidden="true">✓</span></button>
           <button class="companion-option" type="button" data-companion="teddy" aria-label="选择泰迪" aria-pressed="false"><img src="./assets/teddy.svg" alt="" width="56" height="56"><span class="companion-caption"><strong>泰迪</strong><small>卷卷毛 · 圆耳朵</small></span><span class="companion-check" aria-hidden="true">✓</span></button>
           <button class="companion-option" type="button" data-companion="collie" aria-label="选择边牧" aria-pressed="false"><img src="./assets/collie.svg" alt="" width="56" height="56"><span class="companion-caption"><strong>边牧</strong><small>黑白花 · 神气十足</small></span><span class="companion-check" aria-hidden="true">✓</span></button>
+        </div>
+        <div class="companion-options" data-companion-group="cat" role="group" aria-label="猫咪外观" hidden>
+          <button class="companion-option" type="button" data-companion="ginger" aria-label="选择橘猫" aria-pressed="false"><img src="./assets/ginger.svg" alt="" width="56" height="56"><span class="companion-caption"><strong>橘猫</strong><small>暖暖橘毛 · 小虎斑</small></span><span class="companion-check" aria-hidden="true">✓</span></button>
+          <button class="companion-option" type="button" data-companion="ragdoll" aria-label="选择布偶" aria-pressed="false"><img src="./assets/ragdoll.svg" alt="" width="56" height="56"><span class="companion-caption"><strong>布偶</strong><small>软软浅毛 · 蓝眼睛</small></span><span class="companion-check" aria-hidden="true">✓</span></button>
+          <button class="companion-option" type="button" data-companion="cowcat" aria-label="选择奶牛猫" aria-pressed="false"><img src="./assets/cow-cat.svg" alt="" width="56" height="56"><span class="companion-caption"><strong>奶牛猫</strong><small>黑白斑点 · 小花脸</small></span><span class="companion-check" aria-hidden="true">✓</span></button>
         </div>
         <p id="companion-status" class="sr-only" role="status" aria-live="polite"></p>
       </section>
@@ -46,17 +51,17 @@
         <section class="arcade" aria-label="游戏区">
           <div class="arcade-top"><span class="live-dot"></span><span id="companion-park">西高地的好运公园</span><span class="arcade-meta">60 秒 · 3 颗爱心 · 无限快乐</span><button id="pause-button" class="pause-button" disabled aria-label="暂停游戏" title="暂停 / P"><span aria-hidden="true">Ⅱ</span></button></div>
           <div class="game-stage" id="game-stage">
-            <canvas id="game-canvas" width="800" height="520" tabindex="0" aria-label="游戏画面。按左右方向键或 A、D 移动小狗，空格键暂停。手机可拖动小狗或使用下方按钮。">你的浏览器不支持画布，请使用较新的浏览器。</canvas>
+            <canvas id="game-canvas" width="800" height="520" tabindex="0" aria-label="游戏画面。按左右方向键或 A、D 移动角色，空格键暂停。手机可拖动角色或使用下方按钮。">你的浏览器不支持画布，请使用较新的浏览器。</canvas>
             <div class="hud" aria-hidden="true"><div class="hud-score"><span class="hud-label">本局得分</span><strong id="score">0</strong></div><div class="hud-center"><span id="combo" class="combo"></span></div><div class="hud-right"><span class="timer"><svg viewBox="0 0 20 20"><circle cx="10" cy="11" r="6.5"/><path d="M10 7v4l2 1M7 1h6m-3 0v3"/></svg><strong id="time">60</strong><span>s</span></span><span id="lives" class="hearts">♥ ♥ ♥</span></div></div>
             <div id="screen" class="screen">
               <div class="welcome-card" id="welcome-card">
                 <div class="puppy-portrait"><span class="portrait-spark spark-one">✦</span><span class="portrait-spark spark-two">✧</span><img data-companion-portrait src="./assets/westie.svg" width="115" height="115" alt="白白软软、尖耳朵的西高地小狗"><span class="portrait-coin" aria-hidden="true">₊</span></div>
                 <p class="card-kicker" id="card-kicker">汪！准备好了吗？</p>
                 <h2 id="card-title">一起接住好运气</h2>
-                <p class="card-description" id="card-description">金币要接住，炸弹要躲开。<br>和小狗一起，装满小小的口袋。</p>
+                <p class="card-description" id="card-description">金币要接住，炸弹要躲开。<br>和小伙伴一起，装满小小的口袋。</p>
                 <div id="result-stats" class="result-stats" hidden><div><span>本局得分</span><strong id="final-score">0</strong></div><div><span>接住金币</span><strong id="final-coins">0</strong></div><div><span>最高连击</span><strong id="final-combo">0</strong></div></div>
                 <button id="start-button" class="primary-button"><span id="start-label">开始接金币</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m8 4 6 6-6 6"/></svg></button>
-                <p class="card-hint" id="card-hint"><kbd>←</kbd><kbd>→</kbd> 移动小狗 <span> / </span> 也可以用鼠标或手指</p>
+                <p class="card-hint" id="card-hint"><kbd>←</kbd><kbd>→</kbd> 移动角色 <span> / </span> 也可以用鼠标或手指</p>
               </div>
             </div>
             <p id="announcement" class="sr-only" role="status" aria-live="polite"></p>
@@ -67,12 +72,12 @@
 
         <aside class="sidebar">
           <section class="record-card" aria-labelledby="record-title"><div class="section-label"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v5c0 5-3 7-5 7S7 13 7 8V3ZM7 5H3v2c0 3 2 5 5 5m9-7h4v2c0 3-2 5-5 5m-4 3v5m-4 0h8"/></svg><h2 id="record-title">我的最高纪录</h2></div><div class="best-score"><strong id="best-score">0</strong><span>分</span><span class="record-star" aria-hidden="true">✧</span></div><p id="record-note">每一个小纪录，都值得摇尾巴。</p><span class="saved-note" id="saved-note"><span></span> 自动保存在当前浏览器</span></section>
-          <section class="rules-card" aria-labelledby="rules-title"><h2 id="rules-title">小狗的冒险指南</h2><ul><li><span class="item-icon coin-icon" aria-hidden="true">$</span><div><strong>接住金币 <b>+10</b></strong><p>叮！快乐又多了一点。</p></div></li><li><span class="item-icon bone-icon" aria-hidden="true">🦴</span><div><strong>惊喜骨头 <b>+30</b></strong><p>偶尔出现的小小奖励。</p></div></li><li><span class="item-icon bomb-icon" aria-hidden="true">✸</span><div><strong>躲开炸弹 <b>−1 ♥</b></strong><p>小心！别让它碰到小狗。</p></div></li></ul><div class="combo-tip"><span aria-hidden="true">✦</span><p>连击达到 <strong>5 次</strong>时，触发双倍得分！漏接奖励或碰到炸弹会中断连击。</p></div></section>
+          <section class="rules-card" aria-labelledby="rules-title"><h2 id="rules-title">小狗的冒险指南</h2><ul><li><span class="item-icon coin-icon" aria-hidden="true">$</span><div><strong>接住金币 <b>+10</b></strong><p>叮！快乐又多了一点。</p></div></li><li><span class="item-icon bone-icon" aria-hidden="true">🦴</span><div><strong>惊喜骨头 <b>+30</b></strong><p>偶尔出现的小小奖励。</p></div></li><li><span class="item-icon bomb-icon" aria-hidden="true">✸</span><div><strong>躲开炸弹 <b>−1 ♥</b></strong><p>小心！保护好你的小伙伴。</p></div></li></ul><div class="combo-tip"><span aria-hidden="true">✦</span><p>连击达到 <strong>5 次</strong>时，触发双倍得分！漏接奖励或碰到炸弹会中断连击。</p></div></section>
           <p class="gentle-note">不赶时间，不必完美。<br>玩一小会儿，也很好。<svg viewBox="0 0 56 28" aria-hidden="true"><path d="M4 12q18 18 42 0m-7-3 8 3-3 8"/></svg></p>
         </aside>
       </div>
     </main>
-    <footer><span>Made for little moments of joy.</span><span>一只小狗，一点快乐 <span aria-hidden="true">♡</span></span></footer>
+    <footer><span>Made for little moments of joy.</span><span>一位小伙伴，一点快乐 <span aria-hidden="true">♡</span></span></footer>
   </div>
 </body>
 </html>
