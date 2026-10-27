@@ -103,10 +103,20 @@ test('time limit finishes exactly once with no postgame scoring', () => {
 
 test('the dog stays on the field and ignores nonfinite movement', () => {
   const game = fresh();
-  game.setPlayer(-100); assert.equal(game.playerX, 45);
-  game.setPlayer(10000); assert.equal(game.playerX, 755);
-  game.setPlayer(NaN); assert.equal(game.playerX, 755);
-  game.move(-1, 0.25); assert.equal(game.playerX, 617.5);
+  game.setPlayer(-100); assert.equal(game.playerX, 80);
+  game.setPlayer(10000); assert.equal(game.playerX, 720);
+  game.setPlayer(NaN); assert.equal(game.playerX, 720);
+  game.move(-1, 0.25); assert.equal(game.playerX, 582.5);
+});
+
+test('coins at either spawn edge remain reachable with the wider character padding', () => {
+  const game = fresh();
+  game.setPlayer(-1000);
+  catchItem(game, 'coin', 40);
+  assert.equal(game.score, 10);
+  game.setPlayer(1000);
+  catchItem(game, 'coin', 760);
+  assert.equal(game.score, 20);
 });
 
 test('slow frames still catch an item crossing the dog', () => {

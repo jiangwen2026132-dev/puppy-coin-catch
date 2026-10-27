@@ -34,7 +34,8 @@
     }
 
     setPlayer(x) {
-      if (Number.isFinite(x)) this.playerX = Math.max(45, Math.min(WIDTH - 45, x));
+      // The full illustrated character includes a tail; keep its silhouette on screen.
+      if (Number.isFinite(x)) this.playerX = Math.max(80, Math.min(WIDTH - 80, x));
     }
 
     move(direction, dt) {

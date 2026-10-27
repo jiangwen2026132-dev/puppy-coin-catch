@@ -6,16 +6,16 @@
   <meta name="theme-color" content="#fcf8f0">
   <meta name="description" content="小猫小狗的小小发财计划。六种萌宠外观自由切换，接金币、躲炸弹，来一场 60 秒的快乐挑战！">
   <title>小狗接金币 · A little happy arcade</title>
-  <link rel="icon" href="./assets/westie.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./styles.css?v=1.2.0">
-  <script src="./engine.js" defer></script>
-  <script src="./game.js?v=1.2.0" defer></script>
+  <link rel="icon" href="./assets/illustrated/westie.webp" type="image/webp">
+  <link rel="stylesheet" href="./styles.css?v=2.0.0">
+  <script src="./engine.js?v=2.0.0" defer></script>
+  <script src="./game.js?v=2.0.0" defer></script>
 </head>
 <body>
   <div class="site-shell">
     <header class="site-header">
       <a class="brand" href="./" aria-label="萌宠接金币首页">
-        <span class="brand-mark"><img data-companion-portrait src="./assets/westie.svg" alt="" width="37" height="37"></span>
+        <span class="brand-mark"><img data-companion-portrait src="./assets/illustrated/westie.webp" alt="" width="37" height="37"></span>
         <span><span id="brand-name">小狗接金币</span><small>PAWS & COINS</small></span>
       </a>
       <div class="header-actions">
@@ -35,14 +35,14 @@
       <section class="companion-picker" aria-labelledby="companion-title">
         <div class="companion-heading"><h2 id="companion-title">选一位小伙伴 <span aria-hidden="true">♡</span></h2><p id="companion-note">随时切换，记住你的选择。</p><div class="species-switch" role="group" aria-label="宠物类型"><button type="button" data-species="dog" aria-pressed="true">小狗</button><button type="button" data-species="cat" aria-pressed="false">猫咪</button></div></div>
         <div class="companion-options" data-companion-group="dog" role="group" aria-label="小狗外观">
-          <button class="companion-option" type="button" data-companion="westie" aria-label="选择西高地" aria-pressed="true"><img src="./assets/westie.svg" alt="" width="56" height="56"><span class="companion-caption"><strong>西高地</strong><small>白白软软 · 小尖耳</small></span><span class="companion-check" aria-hidden="true">✓</span></button>
-          <button class="companion-option" type="button" data-companion="teddy" aria-label="选择泰迪" aria-pressed="false"><img src="./assets/teddy.svg" alt="" width="56" height="56"><span class="companion-caption"><strong>泰迪</strong><small>卷卷毛 · 圆耳朵</small></span><span class="companion-check" aria-hidden="true">✓</span></button>
-          <button class="companion-option" type="button" data-companion="collie" aria-label="选择边牧" aria-pressed="false"><img src="./assets/collie.svg" alt="" width="56" height="56"><span class="companion-caption"><strong>边牧</strong><small>黑白花 · 神气十足</small></span><span class="companion-check" aria-hidden="true">✓</span></button>
+          <button class="companion-option" type="button" data-companion="westie" aria-label="选择西高地" aria-pressed="true"><img src="./assets/illustrated/westie.webp" alt="" width="56" height="56"><span class="companion-caption"><strong>西高地</strong><small>白白软软 · 小尖耳</small></span><span class="companion-check" aria-hidden="true">✓</span></button>
+          <button class="companion-option" type="button" data-companion="teddy" aria-label="选择泰迪" aria-pressed="false"><img src="./assets/illustrated/teddy.webp" alt="" width="56" height="56"><span class="companion-caption"><strong>泰迪</strong><small>卷卷毛 · 圆耳朵</small></span><span class="companion-check" aria-hidden="true">✓</span></button>
+          <button class="companion-option" type="button" data-companion="collie" aria-label="选择边牧" aria-pressed="false"><img src="./assets/illustrated/collie.webp" alt="" width="56" height="56"><span class="companion-caption"><strong>边牧</strong><small>黑白花 · 神气十足</small></span><span class="companion-check" aria-hidden="true">✓</span></button>
         </div>
         <div class="companion-options" data-companion-group="cat" role="group" aria-label="猫咪外观" hidden>
-          <button class="companion-option" type="button" data-companion="ginger" aria-label="选择橘猫" aria-pressed="false"><img src="./assets/ginger.svg" alt="" width="56" height="56"><span class="companion-caption"><strong>橘猫</strong><small>暖暖橘毛 · 小虎斑</small></span><span class="companion-check" aria-hidden="true">✓</span></button>
-          <button class="companion-option" type="button" data-companion="ragdoll" aria-label="选择布偶" aria-pressed="false"><img src="./assets/ragdoll.svg" alt="" width="56" height="56"><span class="companion-caption"><strong>布偶</strong><small>软软浅毛 · 蓝眼睛</small></span><span class="companion-check" aria-hidden="true">✓</span></button>
-          <button class="companion-option" type="button" data-companion="cowcat" aria-label="选择奶牛猫" aria-pressed="false"><img src="./assets/cow-cat.svg" alt="" width="56" height="56"><span class="companion-caption"><strong>奶牛猫</strong><small>黑白斑点 · 小花脸</small></span><span class="companion-check" aria-hidden="true">✓</span></button>
+          <button class="companion-option" type="button" data-companion="ginger" aria-label="选择橘猫" aria-pressed="false"><img src="./assets/illustrated/ginger.webp" alt="" width="56" height="56"><span class="companion-caption"><strong>橘猫</strong><small>暖暖橘毛 · 小虎斑</small></span><span class="companion-check" aria-hidden="true">✓</span></button>
+          <button class="companion-option" type="button" data-companion="ragdoll" aria-label="选择布偶" aria-pressed="false"><img src="./assets/illustrated/ragdoll.webp" alt="" width="56" height="56"><span class="companion-caption"><strong>布偶</strong><small>软软浅毛 · 蓝眼睛</small></span><span class="companion-check" aria-hidden="true">✓</span></button>
+          <button class="companion-option" type="button" data-companion="cowcat" aria-label="选择奶牛猫" aria-pressed="false"><img src="./assets/illustrated/cowcat.webp" alt="" width="56" height="56"><span class="companion-caption"><strong>奶牛猫</strong><small>黑白斑点 · 小花脸</small></span><span class="companion-check" aria-hidden="true">✓</span></button>
         </div>
         <p id="companion-status" class="sr-only" role="status" aria-live="polite"></p>
       </section>
@@ -55,7 +55,7 @@
             <div class="hud" aria-hidden="true"><div class="hud-score"><span class="hud-label">本局得分</span><strong id="score">0</strong></div><div class="hud-center"><span id="combo" class="combo"></span></div><div class="hud-right"><span class="timer"><svg viewBox="0 0 20 20"><circle cx="10" cy="11" r="6.5"/><path d="M10 7v4l2 1M7 1h6m-3 0v3"/></svg><strong id="time">60</strong><span>s</span></span><span id="lives" class="hearts">♥ ♥ ♥</span></div></div>
             <div id="screen" class="screen">
               <div class="welcome-card" id="welcome-card">
-                <div class="puppy-portrait"><span class="portrait-spark spark-one">✦</span><span class="portrait-spark spark-two">✧</span><img data-companion-portrait src="./assets/westie.svg" width="115" height="115" alt="白白软软、尖耳朵的西高地小狗"><span class="portrait-coin" aria-hidden="true">₊</span></div>
+                <div class="puppy-portrait"><span class="portrait-spark spark-one">✦</span><span class="portrait-spark spark-two">✧</span><img data-companion-portrait src="./assets/illustrated/westie.webp" width="115" height="115" alt="白白软软、尖耳朵的西高地小狗"><span class="portrait-coin" aria-hidden="true">₊</span></div>
                 <p class="card-kicker" id="card-kicker">汪！准备好了吗？</p>
                 <h2 id="card-title">一起接住好运气</h2>
                 <p class="card-description" id="card-description">金币要接住，炸弹要躲开。<br>和小伙伴一起，装满小小的口袋。</p>

@@ -4,11 +4,11 @@
 
 [🎮 在线玩](https://jiangwen2026132-dev.github.io/puppy-coin-catch/)
 
-使用原生 HTML、CSS、JavaScript 和 Canvas，无需安装依赖、无需后端或 API Key。小猫、小狗与场景是项目自带的 SVG / Canvas 绘图，音效由浏览器合成，没有第三方素材或外部网络请求。
+使用原生 HTML、CSS、JavaScript 和 Canvas，无需安装依赖、无需后端或 API Key。v2.0 使用内置图像生成工具制作的完整毛绒宠物插画和绘本花园，透明角色导出为 WebP，音效由浏览器合成。游戏运行时只读取同站文件，没有第三方素材或外部网络请求。美术方向、参考来源和提示词见 [美术说明](docs/art-direction.md)。
 
 ## 怎么玩
 
-- 先选择 **小狗 / 猫咪**，再选外观：小狗有 **西高地、泰迪、边牧**，猫咪有 **橘猫、布偶、奶牛猫**。欢迎头像、游戏角色、尾巴和页面称呼同步变化，游戏中也可随时切换。
+- 先选择 **小狗 / 猫咪**，再选外观：小狗有 **西高地、泰迪、边牧**，猫咪有 **橘猫、布偶、奶牛猫**。欢迎头像、完整游戏角色和页面称呼同步变化，游戏中也可随时切换。
 - 猫狗两类会分别记住上次选的外观；来回切换或刷新后可以恢复。兼容上一版已保存的小狗选择，切换不会重置本局得分、爱心、时间或最高纪录。偏好保存在当前浏览器中。
 - 电脑：方向键 `←` `→` 或 `A` `D` 移动，也可在游戏区内移动鼠标。
 - 手机：在游戏区拖动手指，或按住下方的左右按钮。
@@ -49,13 +49,9 @@ index.html          页面结构
 styles.css          配色、布局、手机适配
 engine.js           得分、碰撞、计时和状态
 game.js             场景绘制、输入、音效、本地纪录
-assets/westie.svg   西高地插画
-assets/teddy.svg    泰迪插画
-assets/collie.svg   边牧插画
-assets/ginger.svg   橘猫插画
-assets/ragdoll.svg  布偶猫插画
-assets/cow-cat.svg  奶牛猫插画
-assets/puppy.svg    首版小狗插画（保留素材）
+assets/illustrated/  六只透明宠物 WebP 与 park.webp 花园背景
+assets/*.svg        保留的旧版草稿，v2.0 不再引用
+docs/art-direction.md  美术方向、来源与生成提示词
 tests/engine.test.cjs  游戏规则验证
 ```
 
@@ -67,13 +63,15 @@ tests/engine.test.cjs  游戏规则验证
 node --test tests/engine.test.cjs
 ```
 
-覆盖得分、连击、漏接、炸弹保护、失败、重新开始、暂停、计时结束、边界移动及慢帧碰撞。
+共 11 项规则测试，覆盖得分、连击、漏接、炸弹保护、失败、重新开始、暂停、计时结束、边界移动、画面边缘金币可接取及慢帧碰撞。
+
+宠物带有轻微呼吸浮动、移动倾斜和接住奖励时的小跳跃；系统启用减少动态效果时关闭这些装饰动画。完整角色在窄屏保持比例，篮筐口与碰撞线对齐。
 
 ## 想改一点点
 
 - 每局时长：`engine.js` 中的 `DURATION`。
 - 金币 / 骨头分值和连击倍率：`engine.js` 的奖励碰撞分支。
-- 宠物模样：`assets/` 中对应的 SVG 插画；对应的身体、花纹、尾巴及类型在 `game.js` 的 `companions` 设置中。
+- 宠物模样：`assets/illustrated/` 中对应的透明 WebP 插画，类型与名称在 `game.js` 的 `companions` 设置中。替换时保留角色居中和篮筐口约在图像高度 66% 的位置。
 - 页面主色：`styles.css` 开头的颜色变量。
 
 MIT License，可自由修改和分享。

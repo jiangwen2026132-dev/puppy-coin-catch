@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const { PuppyGame, WIDTH: W, HEIGHT: H, PLAYER_Y } = window.PuppyEngine;
+  const { PuppyGame, WIDTH: W, HEIGHT: H, PLAYER_Y, CATCH_LINE } = window.PuppyEngine;
   const byId = (id) => document.getElementById(id);
   const canvas = byId('game-canvas');
   const ctx = canvas.getContext('2d');
@@ -10,18 +10,20 @@
   const pauseButton = byId('pause-button');
   const soundButton = byId('sound-button');
   const companions = {
-    westie: { species: 'dog', name: '西高地', image: './assets/westie.svg', alt: '白白软软、尖耳朵的西高地小狗', coat: '#fffaf0', chest: '#f0eadb', paws: '#fffaf0', outline: '#b9b09c', tail: 'upright' },
-    teddy: { species: 'dog', name: '泰迪', image: './assets/teddy.svg', alt: '棕色卷毛、圆耳朵的泰迪小狗', coat: '#c9925f', chest: '#e0b37d', paws: '#d9a36e', outline: '#a8794f', tail: 'curly' },
-    collie: { species: 'dog', name: '边牧', image: './assets/collie.svg', alt: '黑白毛色、竖耳朵的边牧小狗', coat: '#484a49', chest: '#fff8e8', paws: '#fff8e8', outline: '#55534f', tail: 'bushy' },
-    ginger: { species: 'cat', name: '橘猫', image: './assets/ginger.svg', alt: '橘色虎斑毛、绿色眼睛的小猫', coat: '#e8b472', chest: '#fff0d4', paws: '#f2d4a5', outline: '#b58b5e', tail: 'cat', markings: 'tabby' },
-    ragdoll: { species: 'cat', name: '布偶', image: './assets/ragdoll.svg', alt: '浅色长毛、蓝眼睛的布偶猫', coat: '#fff9ef', chest: '#f1ebe0', paws: '#fffaf1', outline: '#b7aa9d', tail: 'cat', tailColor: '#b7aa9d' },
-    cowcat: { species: 'cat', name: '奶牛猫', image: './assets/cow-cat.svg', alt: '黑白斑点、小花脸的奶牛猫', coat: '#fffaf0', chest: '#f6f0e3', paws: '#fffaf0', outline: '#a7a396', tail: 'cat', tailColor: '#505351', markings: 'cow' },
+    westie: { species: 'dog', name: '西高地', image: './assets/illustrated/westie.webp', alt: '抱着藤编篮筐、白毛蓬松的西高地幼犬' },
+    teddy: { species: 'dog', name: '泰迪', image: './assets/illustrated/teddy.webp', alt: '抱着藤编篮筐、杏棕色卷毛的泰迪幼犬' },
+    collie: { species: 'dog', name: '边牧', image: './assets/illustrated/collie.webp', alt: '抱着藤编篮筐、黑白毛色的边牧幼犬' },
+    ginger: { species: 'cat', name: '橘猫', image: './assets/illustrated/ginger.webp', alt: '抱着藤编篮筐、绿眼睛橘色虎斑的小猫' },
+    ragdoll: { species: 'cat', name: '布偶', image: './assets/illustrated/ragdoll.webp', alt: '抱着藤编篮筐、蓝眼睛浅色长毛的布偶猫' },
+    cowcat: { species: 'cat', name: '奶牛猫', image: './assets/illustrated/cowcat.webp', alt: '抱着藤编篮筐、金色眼睛黑白斑点的奶牛猫' },
   };
   const companionImages = new Map(Object.entries(companions).map(([id, settings]) => {
     const image = new Image();
     image.src = settings.image;
     return [id, image];
   }));
+  const parkArt = new Image();
+  parkArt.src = './assets/illustrated/park.webp';
   const companionStorageKey = 'puppy-coin-catch.companion.v1';
   const speciesChoicesKey = 'puppy-coin-catch.species-choices.v1';
   const lastCompanionBySpecies = { dog: 'westie', cat: 'ginger' };
@@ -49,6 +51,9 @@
   let physicalWidth = 0;
   let physicalHeight = 0;
   let spriteYScale = 1;
+  let catchBounce = 0;
+  let previousPlayerX = game.playerX;
+  let characterLean = 0;
 
   try {
     const stored = Number(localStorage.getItem(storageKey));
@@ -191,6 +196,9 @@
       game.reset();
       effects = [];
       shake = 0;
+      catchBounce = 0;
+      previousPlayerX = game.playerX;
+      characterLean = 0;
       bestAtStart = best;
       byId('card-kicker').classList.remove('new-record');
       announce(`开始游戏，60 秒挑战。左右移动${petLabel()}，接金币，躲炸弹。`);
@@ -244,6 +252,7 @@
   function processEvents() {
     for (const event of game.events) {
       if (event.type === 'catch') {
+        catchBounce = 0.28;
         effects.push({ x: event.x, y: event.y - 12, age: 0, text: `+${event.points}`, color: '#b18b39' });
         if (!motionReduced) for (let i = 0; i < 6; i++) effects.push({ x: event.x, y: event.y, age: 0, vx: (Math.random() - 0.5) * 150, vy: -35 - Math.random() * 80, color: '#dfb759' });
         tone(event.kind === 'bone' ? 1046 : 784, 0.1);
@@ -293,6 +302,10 @@
   }
 
   function scenery() {
+    if (parkArt.complete && parkArt.naturalWidth) {
+      ctx.drawImage(parkArt, 0, 0, W, H);
+      return;
+    }
     const sky = ctx.createLinearGradient(0, 0, 0, H); sky.addColorStop(0, '#f1eed9'); sky.addColorStop(0.7, '#f8f1db'); sky.addColorStop(1, '#eef0d8');
     ctx.fillStyle = sky; ctx.fillRect(0, 0, W, H);
     ellipse(653, 96, 36, 36, '#eee2ae'); ellipse(653, 96, 28, 28, '#f5e9bd');
@@ -334,49 +347,29 @@
     ctx.strokeStyle = '#dbb762'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(15,-34); ctx.lineTo(15,-29); ctx.moveTo(21,-29); ctx.lineTo(18,-26); ctx.moveTo(23,-22); ctx.lineTo(18,-23); ctx.stroke(); ctx.restore();
   }
 
-  function drawCompanion() {
-    const x = game.playerX;
-    const moving = keys.size > 0 || touchHolds.size > 0;
-    const bob = motionReduced ? 0 : Math.sin(sceneryTime * (moving ? 14 : 3)) * (moving ? 2 : 0.7);
-    ellipse(x, PLAYER_Y + 34, 46, 8, '#82774722');
-    ctx.save(); ctx.translate(x, PLAYER_Y + bob);
+  function drawCompanion(dt) {
+    if (!puppy.complete || !puppy.naturalWidth) return;
+    const height = 184;
+    const width = height * puppy.naturalWidth / puppy.naturalHeight;
+    // Align the illustrated basket opening with the actual collision line,
+    // including on tall mobile canvases where sprite proportions stay square.
+    const basketAnchor = 0.66;
+    const feetAnchor = 0.96;
+    const baseY = CATCH_LINE + (feetAnchor - basketAnchor) * height * spriteYScale;
+    const delta = game.playerX - previousPlayerX;
+    previousPlayerX = game.playerX;
+    const moving = Math.abs(delta) > 0.15;
+    const leanTarget = motionReduced ? 0 : Math.max(-0.035, Math.min(0.035, delta * 0.008));
+    characterLean += (leanTarget - characterLean) * Math.min(1, dt * 12);
+    const bob = motionReduced ? 0 : Math.sin(sceneryTime * (moving ? 12 : 3)) * (moving ? 1.4 : 0.65);
+    const hop = motionReduced || catchBounce <= 0 ? 0 : Math.sin((1 - catchBounce / 0.28) * Math.PI) * 5;
+    ellipse(game.playerX, baseY + 3, 45, 6, '#4e59392b');
+    ctx.save();
+    ctx.translate(game.playerX, baseY + (bob - hop) * spriteYScale);
     ctx.scale(1, spriteYScale);
-    if (game.invincible > 0 && Math.floor(game.invincible * 10) % 2 === 0) ctx.globalAlpha = 0.4;
-    const wag = motionReduced ? 0 : Math.sin(sceneryTime * 10) * 5;
-    ctx.lineCap = 'round';
-    ctx.beginPath(); ctx.moveTo(26,6);
-    if (companion.tail === 'cat') {
-      ctx.bezierCurveTo(51,16,65 + wag,-8,53 + wag,-26);
-      ctx.bezierCurveTo(47 + wag,-35,35 + wag,-28,40 + wag,-20);
-    } else if (companion.tail === 'upright') ctx.quadraticCurveTo(39 + wag, -1, 37 + wag, -22);
-    else ctx.quadraticCurveTo(55, -3 + wag, 43, -15);
-    ctx.strokeStyle = companion.outline; ctx.lineWidth = companion.tail === 'cat' ? 9 : companion.tail === 'bushy' ? 14 : 11; ctx.stroke();
-    ctx.strokeStyle = companion.tailColor || companion.coat; ctx.lineWidth -= 3; ctx.stroke();
-    if (companion.tail === 'curly') {
-      ellipse(43,-15,8,8,companion.outline); ellipse(43,-16,6,6,companion.coat);
-    } else if (companion.tail === 'bushy') {
-      ctx.strokeStyle = '#fff8e8'; ctx.lineWidth = 10; ctx.beginPath(); ctx.moveTo(46,-9); ctx.quadraticCurveTo(48,-12,43,-15); ctx.stroke();
-    }
-    ellipse(0,12,companion.species === 'cat' ? 25 : 29,25,companion.coat);
-    ctx.strokeStyle = companion.outline; ctx.lineWidth = 1.3; ctx.stroke();
-    ellipse(0,12,17,22,companion.chest);
-    if (companion.markings === 'tabby') {
-      ctx.strokeStyle = '#c48a4f'; ctx.lineWidth = 3; ctx.beginPath();
-      ctx.moveTo(-23,2); ctx.lineTo(-16,5); ctx.moveTo(-25,13); ctx.lineTo(-17,14);
-      ctx.moveTo(23,2); ctx.lineTo(16,5); ctx.moveTo(25,13); ctx.lineTo(17,14); ctx.stroke();
-    } else if (companion.markings === 'cow') {
-      ellipse(-19,5,6,8,'#505351'); ellipse(19,17,6,8,'#505351');
-    }
-    if (companion.tail === 'curly') {
-      ctx.strokeStyle = '#ae774d'; ctx.lineWidth = 1.6;
-      for (const [x,y] of [[-22,6],[22,6],[-24,19],[24,19]]) { ctx.beginPath(); ctx.arc(x,y,4,0.3,Math.PI * 1.6); ctx.stroke(); }
-    }
-    ellipse(-19,30,11,7,companion.paws); ellipse(19,30,11,7,companion.paws);
-    ctx.fillStyle = '#7f6b4c'; ctx.strokeStyle = '#756044'; ctx.lineWidth = 1.5;
-    ctx.beginPath(); ctx.roundRect(-30,17,60,21,5); ctx.fillStyle = '#caa77a'; ctx.fill(); ctx.stroke();
-    ctx.strokeStyle = '#b18d61'; ctx.beginPath(); ctx.moveTo(-27,24); ctx.lineTo(27,24); ctx.moveTo(-26,31); ctx.lineTo(26,31); ctx.moveTo(-16,18); ctx.lineTo(-16,37); ctx.moveTo(0,18); ctx.lineTo(0,37); ctx.moveTo(16,18); ctx.lineTo(16,37); ctx.stroke();
-    if (puppy.complete && puppy.naturalWidth) ctx.drawImage(puppy, -45, -66, 90, 90);
-    else { ellipse(0,-26,33,32,companion.coat); ellipse(-12,-28,3,4,'#94806a'); ellipse(12,-28,3,4,'#94806a'); ellipse(0,-14,5,4,'#94806a'); }
+    ctx.rotate(characterLean);
+    if (game.invincible > 0 && Math.floor(game.invincible * 10) % 2 === 0) ctx.globalAlpha = 0.45;
+    ctx.drawImage(puppy, -width / 2, -feetAnchor * height, width, height);
     ctx.restore();
   }
 
@@ -394,12 +387,12 @@
     ctx.save();
     if (shake > 0) ctx.translate(Math.sin(sceneryTime * 100) * 4 * shake / 0.22, 0);
     scenery();
+    drawCompanion(dt);
     for (const item of game.items) {
       if (item.type === 'coin') drawCoin(item.x,item.y,item.phase);
       else if (item.type === 'bone') drawBone(item.x,item.y,Math.sin(sceneryTime * 2 + item.phase) * 0.4);
       else drawBomb(item.x,item.y,item.phase);
     }
-    drawCompanion();
     for (const effect of effects) {
       if (game.status === 'playing') {
         effect.age += dt;
@@ -424,6 +417,7 @@
       game.move(direction, dt);
       game.update(dt);
       shake = Math.max(0, shake - dt);
+      catchBounce = Math.max(0, catchBounce - dt);
       processEvents();
       updateHud();
     }

@@ -42,3 +42,56 @@
   .gentle-note{margin:0 0 0 15px;font-size:11px}
   .gentle-note svg{left:133px;width:38px}
 }
+
+/* Illustrated edition: complete painted characters, warm paper and a readable stage. */
+:root{--green:#6e845f;--muted:#8d806d;--line:#e5decf}
+.site-header{height:88px}.intro{padding-top:31px;padding-bottom:25px}
+.brand-mark{overflow:hidden;background:#eee5d3}
+.brand-mark img{width:48px;height:48px;object-fit:contain;transform:rotate(6deg)}
+.intro-copy{color:#8a7c67}.little-note{color:#998b75}
+.companion-picker{background:#fffdf8;padding:16px 20px;box-shadow:0 5px 18px #71623a05}
+.companion-heading p{color:#968972;line-height:1.8}
+.companion-option{flex-direction:column;justify-content:center;text-align:center;gap:6px;padding:10px 12px 13px;min-height:178px;border-color:#e5dfd2;background:linear-gradient(145deg,#fffdf9,#f6f1e5);box-shadow:0 2px 0 #eee7da;transition:border-color .18s,background .18s,box-shadow .18s}
+.companion-option:hover{border-color:#b8bba1;background:#f7f5e9;box-shadow:0 4px 12px #7e724816}
+.companion-option img{width:118px;height:118px;max-width:100%;object-fit:contain;filter:drop-shadow(0 4px 3px #77634412);transition:transform .2s}
+.companion-option:hover img{transform:translateY(-3px)}
+.companion-option[aria-pressed=true]{background:linear-gradient(145deg,#f6f7ec,#eaf0df);border-color:#879a74;box-shadow:inset 0 0 0 1px #879a74,0 3px 0 #e0e7d6}
+.companion-caption{align-items:center;gap:2px}.companion-caption strong{font-size:14px;color:#554b3e}.companion-caption small{font-size:10px;color:#998a72;letter-spacing:.2px}
+.companion-check{right:10px;top:10px;width:18px;height:18px;line-height:18px;border-radius:50%;background:#81936f;color:#fffdf5;font-size:10px}
+.arcade{border-color:#d9d3c3;box-shadow:0 5px 0 #e7e0d1,0 15px 30px #685a3610}
+.arcade-top{color:#80765f}.arcade-meta{color:#a89a82}
+.hud{inset:16px 18px auto}.hud-score,.hud-right{border:1px solid #fffdf2b0;background:#fffdf0db;border-radius:13px;padding:8px 12px;box-shadow:0 3px 10px #5f603212}
+.hud-score strong{font-size:27px;color:#605943}.hud-label{color:#9b8c6b}.hud-right{gap:7px}.hearts{color:#c68070}
+.screen{background:#fff8e80a;backdrop-filter:blur(1px)}
+.welcome-card{background:#fffdf3f2;border-color:#fffef7;box-shadow:0 12px 30px #6f643218;padding-top:13px}
+.puppy-portrait{width:182px;height:165px;margin:-8px auto 0}
+.puppy-portrait img{width:182px;height:182px;object-fit:contain;animation:none;filter:drop-shadow(0 5px 4px #82714614)}
+.puppy-portrait:before{display:none}.portrait-spark,.portrait-coin{display:none}
+.card-kicker{color:#9a8360;letter-spacing:1px}.welcome-card h2{color:#4b4437;font-size:25px}
+.welcome-card .card-description{font-size:12px;line-height:1.8;color:#8c7e68;margin-bottom:17px}
+.primary-button{background:#6e845f;border-color:#617453;box-shadow:0 4px 0 #596c4e}.primary-button:hover{background:#637c54}
+.card-hint{color:#a4967d}.rules-card li p{color:#9b8c73;font-size:11px}.record-card p{color:#8c927b}
+.screen.is-paused .puppy-portrait{height:140px}.screen.is-paused .puppy-portrait img{width:158px;height:158px}
+.screen.is-result .puppy-portrait{height:92px}.screen.is-result .puppy-portrait img{width:106px;height:106px}
+@media(min-width:761px) and (max-width:1000px){
+  .companion-picker{grid-template-columns:148px minmax(0,1fr);padding:14px}
+  .companion-option{padding:10px 7px 12px;min-height:164px}.companion-option img{width:101px;height:107px}
+  .companion-caption strong{font-size:13px}.companion-caption small{font-size:9px;white-space:normal}
+  .puppy-portrait{height:125px}.puppy-portrait img{width:146px;height:146px}
+  .welcome-card h2{font-size:22px}.welcome-card .card-description{font-size:11px;margin-bottom:13px}
+}
+@media(max-width:760px){
+  .site-header{height:80px}.intro{padding:26px 0 23px}.intro-copy{font-size:11px}
+  .companion-picker{padding:15px 13px}.companion-heading p{font-size:8px}
+  .companion-options{gap:8px;margin-top:13px}
+  .companion-option{padding:8px 4px 11px;min-height:153px;gap:5px}
+  .companion-option img{width:92px;height:99px}.companion-caption strong{font-size:12px}.companion-caption small{font-size:8px;white-space:normal}
+  .companion-check{width:15px;height:15px;line-height:15px;font-size:9px;right:6px;top:6px}
+  .hud{inset:11px 12px auto}.hud-score,.hud-right{padding:7px 9px;border-radius:10px}.hud-score strong{font-size:22px}
+  .welcome-card{padding:12px 14px 17px}.puppy-portrait{width:160px;height:130px;margin:-8px auto 0}.puppy-portrait img{width:150px;height:150px}
+  .card-kicker{margin:5px 0 3px;font-size:10px}.welcome-card h2{font-size:22px;margin-bottom:5px}
+  .welcome-card .card-description{font-size:11px;margin-bottom:13px;line-height:1.8}
+  .card-hint{font-size:8px;margin-top:14px}
+  .screen.is-paused .puppy-portrait{height:112px}.screen.is-paused .puppy-portrait img{width:130px;height:130px}
+  .screen.is-result .puppy-portrait{display:none}
+}
